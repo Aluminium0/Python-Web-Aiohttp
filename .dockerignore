@@ -1,0 +1,6 @@
+*
+!requirements.txt
+!advertisements/
+!advertisements/**
+**/__pycache__/
+**/*.pyc

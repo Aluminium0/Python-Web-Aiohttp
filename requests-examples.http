@@ -1,0 +1,40 @@
+@base = http://127.0.0.1:8080
+@email = student@example.com
+@password = homework-password
+@ad_id = 1
+
+### Register once; repeated email returns 409
+POST {{base}}/users
+Content-Type: application/json
+
+{"email": "{{email}}", "password": "{{password}}"}
+
+### Public list
+GET {{base}}/advertisements
+
+### Create as the logged-in user (201); copy its id into ad_id above
+POST {{base}}/advertisements
+Authorization: Basic {{email}} {{password}}
+Content-Type: application/json
+
+{"title": "Desk for sale", "description": "Good condition"}
+
+### Public detail
+GET {{base}}/advertisements/{{ad_id}}
+
+### Update as the owner
+PATCH {{base}}/advertisements/{{ad_id}}
+Authorization: Basic {{email}} {{password}}
+Content-Type: application/json
+
+{"title": "Desk: new price"}
+
+### Delete as the owner (204)
+DELETE {{base}}/advertisements/{{ad_id}}
+Authorization: Basic {{email}} {{password}}
+
+### Unauthenticated creation must fail (401)
+POST {{base}}/advertisements
+Content-Type: application/json
+
+{"title": "Desk", "description": "Good condition"}
